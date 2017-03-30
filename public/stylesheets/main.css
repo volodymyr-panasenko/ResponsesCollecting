@@ -1,0 +1,94 @@
+body {
+    background-color: #E0EEE0;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: black;
+    font-weight: normal;
+}
+
+label {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: black;
+    font-weight: normal;
+}
+
+/* Close button in modal window */
+.close {
+	text-align: right;
+}
+
+button {
+    width: 100px;
+}
+
+#addFieldButton {
+    width: 120px;
+}
+
+/* Edit Fields.html */
+#width60 {
+    width: 60%;
+}
+
+/* Edit Fields.html */
+.width50 {
+    width: 50%;
+}
+
+/* Edit Fields.html */
+#optionsArea {
+    width: 60%;
+}
+
+/* Edit Fields.html */
+#slider {
+    text-align: center;
+    width: 30%;
+}
+
+/* Edit Fields.html */
+.optionsList, .sliderProperties {
+    display: none;
+}
+
+/* Edit Fields.html */
+#invisible {
+    border: 3px solid #E0EEE0;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+input[type="range"], input[type="text"],
+input[type="email"], #select, #textarea, #calendar {
+    width: 30%;
+}
+
+table {
+    border: 3px solid black;
+    text-align: left;
+}
+
+th {
+    background-color: #FDF5E6;
+}
+
+td, th {
+    border-left: 2px solid black;
+}
+
+textarea {
+    resize: none;
+}
+
+/* Success.html */
+#text-success {
+    margin-top: 23%;
+    text-align: center;
+    font-size: 30px;
+}
+
+#error {
+    color: red;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 52%;
+}

@@ -1,0 +1,161 @@
+@(fields: List[models.Field])
+
+@main("Fields") {
+<link href=@routes.Assets.versioned("stylesheets/top_page.css") rel="stylesheet">
+<link href=@routes.Assets.versioned("stylesheets/sticky_footer.css") rel="stylesheet">
+} {
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="@routes.FieldController.fields">Fields</a></li>
+                <li><a href="@routes.ResponseController.responses">Responses</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="@routes.ApplicationController.logout">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="col-sm-10">
+        <a href="fields/FIELDUUID">
+            <button type="button" class="btn btn-default" id="addFieldButton" name="addField"
+                    onclick="@routes.EditController.editing">
+                <span class="glyphicon glyphicon-plus"></span> Add Field
+            </button>
+        </a>
+    </div>
+</div>
+
+<br>
+
+<div class="container">
+    <table class="table table-hover">
+
+        <tr>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Is Active</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @for(field <- fields) {
+        <tr>
+            <td> @field.getLabel()</td>
+            <td> @field.getType()</td>
+            <td>
+                <div class="checkbox">
+                    @if( field.getRequired() ) {
+                    <label><input type="checkbox" value="" checked></label>
+                    } else {
+                    <label><input type="checkbox" value=""></label>
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="checkbox">
+                    @if( field.getActive() ) {
+                    <label><input type="checkbox" value="" checked></label>
+                    } else {
+                    <label><input type="checkbox" value=""></label>
+                    }
+                </div>
+            </td>
+            <td><a class="edit" id="@field.getLabel()" href="#">edit</a></td>
+            <td><a class="delete" id="@field.getLabel()" href="#" data-toggle="modal"
+                   data-target="#confirm">delete</a></td>
+
+        </tr>
+        }
+
+    </table>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirm" role="dialog">
+	<div class="modal-dialog modal-md">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+				<h4 class="modal-title">Confirmation</h4>
+			</div>
+			<div class="modal-body">
+				<p>Do you indeed want to delete this field?</p>
+			</div>
+			<div class="modal-footer">
+				<form action="@routes.FieldController.deleteField()" method="POST"
+					id="deletion" role="form">
+					<button type="submit" class="btn btn-default">Yes</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- Top page graphic link -->
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+   title="Click to return on the top page" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+</a>
+
+<!-- Field deletion -->
+<script>
+    var label;
+    $("a.delete").click(function () {
+        label = $(this).attr("id");
+    });
+
+    var frm = $('#deletion');
+
+    frm.submit(function (event) {
+    	event.preventDefault();
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: {lbl: label},
+            success: function () {
+            	$("#confirm").modal('hide');
+            	$('#' + label).parent().parent().css({"background-color": "#FA8072"});
+            }
+        });
+    });
+</script>
+
+<!--
+	Field editing
+<script>
+    var label;
+    $("a.edit").click(function () {
+        label = $(this).attr("id");
+        
+	$.post("@routes.EditController.editField",
+		{lbl: label},
+		function(){
+			window.location="@routes.EditController.editing";
+		});
+    });
+    
+</script>
+-->
+
+}

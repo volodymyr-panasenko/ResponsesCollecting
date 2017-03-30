@@ -1,0 +1,173 @@
+@(message: String, fields: List[models.Field])
+
+@main("Responses collecting") {
+<script type="text/javascript" src=@routes.Assets.versioned("moment/moment-with-locales.min.js")></script>
+<script type="text/javascript" src=@routes.Assets.versioned("bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")></script>
+<link href=@routes.Assets.versioned("bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css") rel="stylesheet" type="text/css">
+
+<link href=@routes.Assets.versioned("stylesheets/top_page.css") rel="stylesheet">
+<link href=@routes.Assets.versioned("stylesheets/sticky_footer.css") rel="stylesheet">
+} {
+<div class="container-fluid">
+
+    <form action="@routes.FieldController.fields()" method="POST" id="signin" class="navbar-form navbar-right" role="form">
+
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" class="form-control" id="login" name="login" placeholder="Login">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        </div>
+
+        <button type="submit" class="btn btn-default" name="login">
+            <span class="glyphicon glyphicon-log-in"></span>
+            Sign in
+        </button>
+
+        <p id="error"> @message </p>
+
+    </form>
+
+</div>
+
+<div class="container">
+
+    <form action="@routes.HomeController.saveResponse" method="POST" id="saving" role="form">
+
+    <!-- Filling the page fields -->
+        @for(field <- fields) {
+        
+            @if( field.getActive() ) {
+
+            <div class="form-group">
+
+                <!-- Setting required -->
+                @if( field.getRequired() ) {
+                    <label> @field.getLabel()*: </label>
+                } else {
+                    <label> @field.getLabel(): </label>
+                }
+
+                <!-- Single line text -->
+                @if( field.getType().toString().equals("Single line text") ) {
+                    <input type="text" class="form-control" name="@field.getLabel()">
+                }
+
+                <!-- Multi line text -->
+                @if( field.getType().toString().equals("Multi line text") ) {
+                    <textarea class="form-control" rows="5" id="textarea" 
+                    	name="@field.getLabel()"></textarea>
+                }
+
+                <!-- Date -->
+                @if( field.getType().toString().equals("Date") ) {
+                    <div class="input-group date" id="calendar">
+                        <input type="text" class="form-control" name="@field.getLabel()" readonly/>
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                }
+
+                <!-- Slider -->
+                @if( field.getType().toString().equals("Slider") ) {
+	                @defining( new ArrayList(field.getOptions()) ) { list =>
+	  					<input type="range" class="form-control" id="range" 
+                    	min="@list.get(0).getName()" 
+                    	max="@list.get(1).getName()" 
+                    	name="@field.getLabel()">
+					}
+                }
+
+                <!-- Radio button -->
+                @if( field.getType().toString().equals("Radio button") ) {
+                    @for(option <- field.getOptions()) {
+                        <div class="radio">
+                            <label><input type="radio" name="@field.getLabel()" 
+                            	value="@option.getName()"> @option.getName() </label>
+                        </div>
+                    }
+                }
+
+                <!-- Check box -->
+                @if( field.getType().toString().equals("Check box") ) {
+                    <div class="checkbox">
+                    <span style="vertical-align: sub">
+                    @for(option <- field.getOptions()) {
+                        <label><input type="checkbox" name="@field.getLabel()" 
+                        	value="@option.getName()"> @option.getName() </label>
+                        <br>
+                    }
+                    </span>
+                    </div>
+                }
+
+                <!-- Combo box -->
+                @if( field.getType().toString().equals("Combo box") ) {
+                    <select class="form-control" id="select" name="@field.getLabel()">
+                    @for(option <- field.getOptions()) {
+                        <option> @option.getName() </option>
+                    }
+                    </select>
+                }
+
+            </div>
+            <br>
+
+            }
+        }
+
+        <div class="col-sm-2 col-md-2">
+            <button type="submit" class="btn btn-default" name="submit">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                Submit
+            </button>
+        </div>
+
+        <div class="col-sm-2 col-md-2">
+            <button type="reset" class="btn btn-default" name="reset">
+                <span class="glyphicon glyphicon-remove"></span>
+                Reset
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<br>
+<br>
+
+<!-- Top page graphic link -->
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+   title="Click to return on the top page" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+</a>
+
+<!-- Display calendar on English and without setting the time -->
+<script type="text/javascript">
+    $(function () {
+        $('#calendar').datetimepicker(
+                {pickTime: false, language: 'en', format: 'YYYY-MM-DD'}
+        );
+    });
+</script>
+
+<!-- Saving response -->
+<script>
+    var frm = $('#saving');
+    frm.submit(function (event) {
+    	event.preventDefault();
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function () {
+            	window.location="@routes.SuccessController.success";
+            }
+        });
+    });
+</script>
+}

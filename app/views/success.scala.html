@@ -1,0 +1,9 @@
+@(message: String)
+
+@main("Success")  {
+<link href=@routes.Assets.versioned("stylesheets/sticky_footer.css") rel="stylesheet">
+} {
+<div id="text-success">
+    <p> @message </p>
+</div>
+}

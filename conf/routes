@@ -1,0 +1,30 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /                       controllers.HomeController.collecting()
+
+GET     /fields                 controllers.FieldController.fields()
+
+POST    /fields                 controllers.ApplicationController.signIn()
+
+GET     /fields/FIELDUUID		controllers.EditController.editing()
+
+POST    /fields/FIELDUUID		controllers.EditController.editing()
+
+GET     /responses				controllers.ResponseController.responses()
+
+GET     /success				controllers.SuccessController.success()
+
+GET     /logout                 controllers.ApplicationController.logout()
+
+POST    /delete_field			controllers.FieldController.deleteField()
+
+POST    /add_field		        controllers.EditController.addField()
+
+POST    /save_response		    controllers.HomeController.saveResponse()
+
+POST    /edit_field		        controllers.EditController.editField()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

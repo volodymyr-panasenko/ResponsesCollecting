@@ -1,0 +1,176 @@
+@(message: String)
+
+@main("Create/Edit Fields")  {
+<link href=@routes.Assets.versioned("stylesheets/top_page.css") rel="stylesheet">
+<link href=@routes.Assets.versioned("stylesheets/sticky_footer.css") rel="stylesheet">
+} {
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="@routes.FieldController.fields">Fields</a></li>
+                <li><a href="@routes.ResponseController.responses">Responses</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="@routes.ApplicationController.logout">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+
+    <h4> @message </h4>
+    <br>
+
+    <form action="@routes.EditController.addField()" method="POST" id="addition" role="form">
+
+        <table class="table" id="invisible">
+
+            <tr id="invisible">
+
+                <td id="invisible">
+                    <div class="form-group">                    
+                        <label>Label*:</label>
+                    	<input type="text" class="form-control" id="width60" name="label">
+                    </div>
+                </td>
+
+                <td class="width50">
+                    <div class="checkbox">
+                    <span style="vertical-align: sub">
+                        <label><input type="checkbox" name="isRequired">Required</label>
+                    </span>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr id="invisible">
+
+                <td id="invisible">
+                    <div class="form-group">
+                        <label>Type*:</label>
+                        <select class="form-control" id="width60" name="type">
+                            <option class="noOption">Single line text</option>
+                            <option class="noOption">Multi line text</option>
+                            <option class="option">Radio button</option>
+                            <option class="option">Check box</option>
+                            <option class="option">Combo box</option>
+                            <option class="noOption">Date</option>
+                            <option class="sliderOption">Slider</option>
+                        </select>
+                    </div>
+                </td>
+
+                <td class="width50">
+                    <div class="checkbox">
+                    <span style="vertical-align: sub">
+                        <label><input type="checkbox" name="isActive" checked>Is Active</label>
+                    </span>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr id="invisible" class="optionsList">
+                <td>
+                    <div class="form-group">
+                        <label for="optionsArea">Options*:</label>
+                        <textarea class="form-control" rows="5" id="optionsArea" name="optionsArea"
+                                placeholder="Type a new option on a new line"></textarea>
+                    </div>
+                </td>
+            </tr>
+
+            <tr id="invisible" class="sliderProperties">
+                <td>
+                    <div class="form-group">
+                        <label>Slider properties*:</label>
+                        <input type="text" id="slider" class="form-control" name="min" placeholder="Minimum value">
+                        <br>
+                        <input type="text" id="slider" class="form-control" name="max" placeholder="Maximum value">
+                        <br>
+                        <p id="err" style="color: red; font-weight: bold"></p>
+                    </div>
+                </td>
+            </tr>
+
+            <tr id="invisible">
+
+                <td>
+                    <div class="col-sm-4 col-md-4">
+                        <button type="submit" class="btn btn-default" name="save">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Save
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4 col-md-4">
+                        <button type="reset" class="btn btn-default" name="cancel">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            Cancel
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </form>
+
+</div>
+
+<!-- Top page graphic link -->
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+   title="Click to return on the top page" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+</a>
+
+<!-- Showing and hiding elements for field options -->
+<script>
+    $(document).ready(function () {
+        $(".option").click(function () {
+            $(".sliderProperties").hide();
+            $(".optionsList").show();
+        });
+
+        $(".sliderOption").click(function () {
+            $(".optionsList").hide();
+            $(".sliderProperties").show();
+        });
+
+        $(".noOption").click(function () {
+            $(".optionsList").hide();
+            $(".sliderProperties").hide();
+        });
+
+    });
+</script>
+
+<!-- Adding new field -->
+<script>
+    var frm = $('#addition');
+    frm.submit(function (event) {
+    	event.preventDefault();
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function () {
+            	window.location="@routes.FieldController.fields";
+            }
+        });
+    });
+</script>
+}

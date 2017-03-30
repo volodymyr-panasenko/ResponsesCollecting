@@ -1,0 +1,37 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: 14px;
+    right: 5%;
+    left: 5%;
+    position: absolute;
+    bottom: 0;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container .text-muted {
+    margin: 20px 0;
+}
